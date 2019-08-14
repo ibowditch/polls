@@ -23,7 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-^rq(x*d--6_#635*j84d5(fz9@-3(9vdr_s$9+^@cw08dq(ja'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+HOME_DEV_ENV = 'RDS_DB_NAME' not in os.environ                                     # Operating on aws ebFalse        # 'PYTHONUNBUFFERED' in os.environ
+
+# SECURITY WARNING: don't run with debug turned on in production!
+
+DEBUG= HOME_DEV_ENV      # NB: need runserver --insecure flag for this to work in dev env
+if DEBUG:
+    def show_toolbar(request):
+        return True
+    DEBUG_TOOLBAR_CONFIG = { "SHOW_TOOLBAR_CALLBACK" : show_toolbar, }
 
 ALLOWED_HOSTS = ['*']
 
@@ -104,15 +113,31 @@ WSGI_APPLICATION = 'azuresite.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    "default": {
-  #      "ENGINE": "django.db.backends.postgresql",
-        'ENGINE': 'django_tenants.postgresql_backend',
-        "NAME": "polls3",
-        "USER": "ian",
-        "PASSWORD": "ib151258",
+
+if HOME_DEV_ENV:
+    DATABASES = {
+        "default": {
+      #      "ENGINE": "django.db.backends.postgresql",
+            'ENGINE': 'django_tenants.postgresql_backend',
+            "NAME": "polls3",
+            "USER": "ian",
+            "PASSWORD": "ib151258",
+            'OPTIONS': {'client_encoding': 'UTF8', }
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+      #      'ENGINE': 'django.db.backends.postgresql_psycopg2',  # 'django.db.backends.mysql',
+            'ENGINE': 'django_tenants.postgresql_backend',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+            'OPTIONS': { 'client_encoding': 'UTF8', },
+        }
+    }
 
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
