@@ -25,22 +25,42 @@ SECRET_KEY = '-^rq(x*d--6_#635*j84d5(fz9@-3(9vdr_s$9+^@cw08dq(ja'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
-INSTALLED_APPS = [
-    'polls.apps.PollsConfig',
+# INSTALLED_APPS = [
+SHARED_APPS = [
+    'django_tenants',  # mandatory
+    'tenants',  # you must list the app where your tenant model resides in
+    'django.contrib.contenttypes',
+    # everything below here is optional
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
 
+TENANT_APPS = (
+    # The following Django contrib apps must be in TENANT_APPS
+ #   'django.contrib.contenttypes',
+
+    # your tenant-specific apps
+    'polls.apps.PollsConfig',
+#    'myapp.houses',
+)
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+TENANT_MODEL = "tenants.Client" # app.Model
+
+TENANT_DOMAIN_MODEL = "tenants.Domain"  # app.Model
+
+
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,13 +106,17 @@ WSGI_APPLICATION = 'azuresite.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "polls2",
+  #      "ENGINE": "django.db.backends.postgresql",
+        'ENGINE': 'django_tenants.postgresql_backend',
+        "NAME": "polls3",
         "USER": "ian",
         "PASSWORD": "ib151258",
     }
 }
 
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
 
 
 
