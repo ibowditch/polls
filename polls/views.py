@@ -8,7 +8,7 @@ from .models import Choice, Question
 
 
 
-def indexaws(request):    return render(request, 'indexaws.html' )          # Basic response for AWS EB health checks
+def indexaws(request):    return render(request, 'polls/indexaws.html' )          # Basic response for AWS EB health checks
 
 
 class IndexView(generic.ListView):
