@@ -44,7 +44,7 @@ SHARED_APPS = [
     'django_tenants',  # mandatory
     'tenants',  # you must list the app where your tenant model resides in
     'django.contrib.contenttypes',
-    'django_mailbox',
+  #  'django_mailbox',
     # everything below here is optional
     'django.contrib.admin',
     'django.contrib.auth',
