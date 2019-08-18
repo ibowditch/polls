@@ -44,6 +44,7 @@ SHARED_APPS = [
     'django_tenants',  # mandatory
     'tenants',  # you must list the app where your tenant model resides in
     'django.contrib.contenttypes',
+    'django_mailbox',
     # everything below here is optional
     'django.contrib.admin',
     'django.contrib.auth',
@@ -119,8 +120,8 @@ if HOME_DEV_ENV:
         "default": {
       #      "ENGINE": "django.db.backends.postgresql",
             'ENGINE': 'django_tenants.postgresql_backend',
-            "NAME": "polls3",
-            "USER": "ian",
+            "NAME": "polls4",
+            "USER": "postgres",
             "PASSWORD": "ib151258",
             'OPTIONS': {'client_encoding': 'UTF8', }
         }
