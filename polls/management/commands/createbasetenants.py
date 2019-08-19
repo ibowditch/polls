@@ -1,11 +1,17 @@
 from django.core.management.base import BaseCommand
 from tenants.models import Client, Domain
+from azuresite.settings import HOME_DEV_ENV
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        for tn in ['kuring-gai', 'killara', 'hkops', 'westleigh']:
+        if HOME_DEV_ENV:
+            dlist = ['first', 'second', 'third', 'fourth']
+        else:
+            dlist = ['kuringai', 'killara', 'hkops', 'westleigh']
+
+        for tn in dlist:
 
             try:
                 tnfound = Client.objects.filter(schema_name=tn).exists()
