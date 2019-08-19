@@ -55,7 +55,7 @@ SHARED_APPS = [
 
 TENANT_APPS = (
     # The following Django contrib apps must be in TENANT_APPS
- #   'django.contrib.contenttypes',
+    'django.contrib.contenttypes',
 
     # your tenant-specific apps
     'polls.apps.PollsConfig',
