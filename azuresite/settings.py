@@ -28,11 +28,11 @@ HOME_DEV_ENV = 'RDS_DB_NAME' not in os.environ                                  
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG= HOME_DEV_ENV      # NB: need runserver --insecure flag for this to work in dev env
-if DEBUG:
-    def show_toolbar(request):
-        return True
-    DEBUG_TOOLBAR_CONFIG = { "SHOW_TOOLBAR_CALLBACK" : show_toolbar, }
+DEBUG= True # HOME_DEV_ENV      # NB: need runserver --insecure flag for this to work in dev env
+# if DEBUG:
+#     def show_toolbar(request):
+#         return True
+#     DEBUG_TOOLBAR_CONFIG = { "SHOW_TOOLBAR_CALLBACK" : show_toolbar, }
 
 ALLOWED_HOSTS = ['*']
 
